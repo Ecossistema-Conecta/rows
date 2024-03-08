@@ -21,7 +21,6 @@ from collections import OrderedDict
 from itertools import chain, islice
 from os import unlink
 from pathlib import Path
-from unicodedata import normalize
 
 import six
 
@@ -29,8 +28,6 @@ import six
 from rows.fields import get_items  # NOQA
 from rows.fields import TextField, detect_types, make_header
 from rows.table import FlexibleTable, Table
-
-SLUG_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_'
 
 if six.PY2:
     from collections import Iterator
@@ -216,23 +213,3 @@ def serialize(table, *args, **kwargs):
             field_type.serialize(value, *args, **kwargs)
             for value, field_type in zip(row, field_types)
         ]
-
-
-def slug(text, encoding=None, separator='_', permitted_chars=SLUG_CHARS,
-         replace_with_separator=' -_'):
-    if isinstance(text, str):
-        text = text.decode(encoding or 'ascii')
-    clean_text = text.strip()
-    for char in replace_with_separator:
-        clean_text = clean_text.replace(char, separator)
-    double_separator = separator + separator
-    while double_separator in clean_text:
-        clean_text = clean_text.replace(double_separator, separator)
-    ascii_text = normalize('NFKD', clean_text).encode('ascii', 'ignore')
-    strict_text = [x for x in ascii_text if x in permitted_chars]
-    text = ''.join(strict_text).lower()
-    if text.startswith(separator):
-        text = text[len(separator):]
-    if text.endswith(separator):
-        text = text[:-len(separator)]
-    return text
