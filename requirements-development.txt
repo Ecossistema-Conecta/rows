@@ -1,0 +1,36 @@
+-r requirements.txt
+
+# Everything except install_requires
+click
+file-magic
+lxml
+openpyxl
+pymupdf>=1.16.8
+https://github.com/turicas/parquet-python/archive/enhancement/move-to-thriftpy2.zip#egg=parquet
+pdfminer.six
+requests
+requests-cache
+xlrd
+xlwt
+cached-property
+psycopg2-binary
+tqdm
+
+# Test and lint tools
+autoflake
+black
+coverage
+ipdb
+isort
+mock
+nose
+pylint
+pytest
+tox
+yanc
+
+# Doc tools
+click-man
+ghp-import
+mkdocs
+pycco
